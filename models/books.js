@@ -22,13 +22,21 @@ const validateBook = (books) => {
   const schema = yup.object().shape({
     bookname: yup.string().required().min(3).max(50),
     authorName: yup.string().required().min(3).max(40),
-    authorAge: yup.number().required().min(10).max(100),
+    authorAge: yup
+      .number()
+      .required()
+      .min(10, "Age must be greater than 10")
+      .max(100, "Age must be lower than 100"),
     genre: yup.string().required().min(3).max(20),
   });
   return schema
     .validate(book)
     .then((book) => book)
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      return {
+        message: error.message,
+      };
+    });
 };
 
 //Default export
